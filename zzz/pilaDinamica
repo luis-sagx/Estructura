@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Nodo {
+    int dato;
+    struct Nodo* siguiente;
+} Nodo;
+
+typedef struct {
+    Nodo* cima;
+} Pila;
+
+void inicializar(Pila* pila) {
+    pila->cima = NULL;
+}
+
+int estaVacia(Pila* pila) {
+    return pila->cima == NULL;
+}
+
+void apilar(Pila* pila, int dato) {
+    Nodo* nuevoNodo = (Nodo*)malloc(sizeof(Nodo));
+    if (!nuevoNodo) {
+        printf("Error de asignación de memoria.\n");
+        return;
+    }
+    nuevoNodo->dato = dato;
+    nuevoNodo->siguiente = pila->cima;
+    pila->cima = nuevoNodo;
+    printf("Apilado %d en la pila.\n", dato);
+}
+
+int desapilar(Pila* pila) {
+    if (estaVacia(pila)) {
+        printf("Subdesbordamiento: No se puede quitar un elemento, la pila está vacía.\n");
+        return INT_MIN;
+    }
+    Nodo* temp = pila->cima;
+    int dato = temp->dato;
+    pila->cima = pila->cima->siguiente;
+    free(temp);
+    return dato;
+}
+
+int cima(Pila* pila) {
+    if (estaVacia(pila)) {
+        printf("La pila está vacía.\n");
+        return INT_MIN;
+    }
+    return pila->cima->dato;
+}
+
+int main() {
+    Pila pila;
+    inicializar(&pila);
+
+    apilar(&pila, 10);
+    apilar(&pila, 20);
+    apilar(&pila, 30);
+
+    printf("Elemento en la cima: %d\n", cima(&pila));
+    printf("Elemento quitado: %d\n", desapilar(&pila));
+    printf("Elemento en la cima: %d\n", cima(&pila));
+
+    return 

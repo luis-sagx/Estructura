@@ -1,0 +1,74 @@
+Pruebas de ejecucion del programa de arreglos
+
+Prueba 1
+Arreglo Inicial:
+1 2 3 4 5
+Ingrese un numero para la primera posicion del arreglo: 12
+Ingrese un indice para modificar [1-3]: 1
+Ingrese un numero para colocar en el indice [1] : 33
+Ingrese un numero para colocar en el indice [2] : 37
+Ingrese un numero para colocar en el indice [0] : 56
+Ingrese el indice que desea eliminar [0-4]: 4
+Ingrese el numero que desea buscar: 4
+El numero 4 se encuentra en el indice 3
+Arreglo Final:
+56 33 37 4
+
+Process returned 0 (0x0)   execution time : 22.580 s
+
+Prueba 2 
+Arreglo Inicial:
+1 2 3 4 5
+Ingrese un numero para la primera posicion del arreglo: 34
+Ingrese un indice para modificar [1-3]: 2
+Ingrese un numero para colocar en el indice [2] : 47
+Ingrese un numero para colocar en el indice [3] : 78
+Ingrese un numero para colocar en el indice [1] : 1
+Ingrese el indice que desea eliminar [0-4]: 1
+Ingrese el numero que desea buscar: 47
+El numero 47 se encuentra en el indice 1
+Arreglo Final:
+34 47 78 5
+
+Process returned 0 (0x0)   execution time : 32.219 s
+
+Prueba 3 
+Arreglo Inicial:
+1 2 3 4 5
+Ingrese un numero para la primera posicion del arreglo: 43
+Ingrese un indice para modificar [1-3]: 3
+Ingrese un numero para colocar en el indice [3] : 39
+Ingrese un numero para colocar en el indice [4] : 76
+Ingrese un numero para colocar en el indice [2] : 12
+Ingrese el indice que desea eliminar [0-4]: 4
+Ingrese el numero que desea buscar: 5
+El numero no se encuentra en el arreglo
+Arreglo Final:
+43 2 12 39
+
+Process returned 0 (0x0)   execution time : 20.169 s
+
+Prueba 4 
+Arreglo Inicial:
+1 2 3 4 5
+Ingrese un numero para la primera posicion del arreglo: -12
+Ingrese un indice para modificar [1-3]: 54
+Indice invalido
+Ingresar un indice valido: 2
+Ingrese un numero para colocar en el indice [2] : 0
+Ingrese un numero para colocar en el indice [3] : -234
+Ingrese un numero para colocar en el indice [1] : 1000
+Ingrese el indice que desea eliminar [0-4]: 423
+Indice invalido
+Ingresar un indice valido: 6
+Indice invalido
+Ingresar un indice valido: 4
+Ingrese el numero que desea buscar: 0
+El numero 0 se encuentra en el indice 2
+Arreglo Final:
+-12 1000 0 -234
+
+Process returned 0 (0x0)   execution time : 47.324 s
+
+
+

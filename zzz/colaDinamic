@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Nodo {
+    int dato;
+    struct Nodo* siguiente;
+} Nodo;
+
+typedef struct {
+    Nodo* frente;
+    Nodo* fondo;
+} Cola;
+
+void inicializar(Cola* cola) {
+    cola->frente = NULL;
+    cola->fondo = NULL;
+}
+
+int estaVacia(Cola* cola) {
+    return cola->frente == NULL;
+}
+
+void encolar(Cola* cola, int dato) {
+    Nodo* nuevoNodo = (Nodo*)malloc(sizeof(Nodo));
+    if (!nuevoNodo) {
+        printf("Error de asignación de memoria.\n");
+        return;
+    }
+    nuevoNodo->dato = dato;
+    nuevoNodo->siguiente = NULL;
+    if (estaVacia(cola)) {
+        cola->frente = nuevoNodo;
+    } else {
+        cola->fondo->siguiente = nuevoNodo;
+    }
+    cola->fondo = nuevoNodo;
+    printf("Encolado %d en la cola.\n", dato);
+}
+
+int desencolar(Cola* cola) {
+    if (estaVacia(cola)) {
+        printf("Subdesbordamiento: No se puede quitar un elemento, la cola está vacía.\n");
+        return INT_MIN;
+    }
+    Nodo* temp = cola->frente;
+    int dato = temp->dato;
+    cola->frente = cola->frente->siguiente;
+    if (cola->frente == NULL) {
+        cola->fondo = NULL;
+    }
+    free(temp);
+    return dato;
+}
+
+int frente(Cola* cola) {
+    if (estaVacia(cola)) {
+        printf("La cola está vacía.\n");
+        return INT_MIN;
+    }
+    return cola->frente->dato;
+}
+
+int main() {
+    Cola cola;
+    inicializar(&cola);
+
+    encolar(&cola, 10);
+    encolar(&cola, 20);
+    encolar(&cola, 30);
+
+    printf("Elemento en el frente: %d\n", frente(&cola));
+    printf("Elemento quitado: %d\n", desencolar(&cola));
+    printf("Elemento en el frente: %d\n", frente(&cola));
+
+    return 0;
+}
