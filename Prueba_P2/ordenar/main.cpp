@@ -21,7 +21,7 @@ void ordenar(float a[], int size, int b[]) {
 
     for (int i = 0; i < size; i++) {
         Nodo* actual = listas[i].cabeza;
-        while (actual != nullptr) {
+        while (actual != nullptr && actual->siguiente != nullptr) {
             if (actual->dato > actual->siguiente->dato) {
                 float aux = actual->dato;
                 actual->dato = actual->siguiente->dato;
@@ -33,8 +33,8 @@ void ordenar(float a[], int size, int b[]) {
 
     for (int i = 0; i < size; i++) {
         Nodo* actual = listas[i].cabeza;
-        while (actual != nullptr) {
-            a[j++] = actual->dato;
+        for (int j = 0; j < size; j++)  {
+            a[j] = actual->dato;
             actual = actual->siguiente;
             if (actual == nullptr){
                 break;
