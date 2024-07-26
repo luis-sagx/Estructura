@@ -1,100 +1,117 @@
 #include <iostream>
 #include <fstream>
-#include <cstdio> // Para remove()
+#include <string>
+
+#define MAX_SIZE 100
 
 using namespace std;
 
-void dividirArchivo(const string& nombreArchivo, const string& archivoSalida1, const string& archivoSalida2) { // Divide el archivo en dos archivos temporales
-    ifstream archivoEntrada(nombreArchivo);  // Se abre el archivo de entrada para lectura
-    ofstream salida1(archivoSalida1);        // Se abre los archivos de salida para escritura
-    ofstream salida2(archivoSalida2);        
-
-    if (!archivoEntrada.is_open()) {        // Verifica si el archivo de entrada se abrió correctamente
-        cout << "Error, NO se abrió el archivo: " << nombreArchivo << endl;
-        return;     // Si no se abrio sale de la funcion 
+void ordenamientoInsercion(int arr[], int n) {
+    for (int i = 1; i < n; ++i) {
+        int clave = arr[i];
+        int j = i - 1;
+        
+        while (j >= 0 && arr[j] > clave) {
+            arr[j + 1] = arr[j];        // Se mueven los elementos que son mayores que la clave a una posición adelante de su posición actual
+            j--;
+        }
+        arr[j + 1] = clave;
     }
-
-    int dato;
-    bool escribirEnPrimero = true; // Para alternar la escritura entre los dos archivos de salida
-    while (archivoEntrada >> dato) {     //Lee cada dato del archivo de entrada
-        if (escribirEnPrimero)
-            salida1 << dato << endl;    // Escribe el dato en el archivo de salida 1
-        else
-            salida2 << dato << endl;    // Escribe el dato en el archivo de salida 2
-        escribirEnPrimero = !escribirEnPrimero; // Se alterna el archivo de salida 2
-    }
-    archivoEntrada.close();     // Se cierran los archivos
-    salida1.close();
-    salida2.close();
 }
 
-void mezclarArchivos(const string& archivoEntrada1, const string& archivoEntrada2, const string& archivoSalida) { //Mezclar dos archivos ordenados en uno solo
-    ifstream entrada1(archivoEntrada1);  // Abre los archivos de entrada para lectura
-    ifstream entrada2(archivoEntrada2);
-    ofstream salida(archivoSalida);      // Abre el archivo de salida para escritura
-
-    if (!entrada1.is_open() || !entrada2.is_open()) {     // Se verifica si los archivos de entrada se abrieron correctamente
-        cout << "Error, NO se abrieron los archivos de entrada." << endl;
+void dividirYOrdenar(const string& nombreArchivoEntrada) {    // Dividir el archivo en fragmentos más pequeños y ordenarlos
+    ifstream archivoEntrada(nombreArchivoEntrada); // Se abre el archivo de entrada
+    if (!archivoEntrada.is_open()) {
+        cout << "Error al abrir el archivo de entrada." << endl;
         return;
     }
 
-    int dato1, dato2;
-    bool hayDato1 = bool(entrada1 >> dato1);     // Se lee el primer dato del archivo 1
-    bool hayDato2 = bool(entrada2 >> dato2);     // Se lee el primer dato del archivo 1
+    int fragmento[MAX_SIZE]; // Arreglo para almacenar el fragmento
+    int numero, contador = 0, indiceFragmento = 0;
 
-    while (hayDato1 && hayDato2) {     // Se mezcla los datos de los dos archivos de entrada en el archivo de salida
-        if (dato1 < dato2) {
-            salida << dato1 << endl;
-            hayDato1 = bool(entrada1 >> dato1); // Lee el siguiente dato del archivo de entrada 1
-        } else {
-            salida << dato2 << endl;
-            hayDato2 = bool(entrada2 >> dato2); // Lee el siguiente dato del archivo de entrada 2
+    while (archivoEntrada >> numero) {  // Se leen números y se escriben fragmentos ordenados en archivos temporales
+        fragmento[contador++] = numero; // Se lee el número y se almacena en el fragmento
+        if (contador == MAX_SIZE) { // Se verifica si el fragmento está lleno
+            ordenamientoInsercion(fragmento, contador); // Se ordena el fragmento
+            ofstream archivoSalida("temp" + to_string(indiceFragmento++) + ".txt"); // Se crea el archivo temporal
+            for (int i = 0; i < contador; ++i) {
+                archivoSalida << fragmento[i] << '\n'; // Se escribe el fragmento ordenado en el archivo temporal
+            }
+            contador = 0; // Se reinicia el contador
         }
     }
 
-    while (hayDato1) {  // Mientas haya datos restantes en el archivo 1 se pone en el archivo de salida
-        salida << dato1 << endl;
-        hayDato1 = bool(entrada1 >> dato1);     
+    if (contador > 0) {
+        ordenamientoInsercion(fragmento, contador); // Se ordena el fragmento restante
+        ofstream archivoSalida("temp" + to_string(indiceFragmento) + ".txt"); // Se crea el archivo temporal
+        for (int i = 0; i < contador; ++i) {
+            archivoSalida << fragmento[i] << '\n'; // Se escribe el fragmento ordenado en el archivo temporal
+        }
     }
 
-    while (hayDato2) {  // Mientas haya datos restantes en el archivo 1 se pone en el archivo de salida
-        salida << dato2 << endl;
-        hayDato2 = bool(entrada2 >> dato2);
-    }
-
-    entrada1.close();       // Se cierran los archivos
-    entrada2.close();
-    salida.close();
+    archivoEntrada.close(); // Se cierra el archivo de entrada
 }
 
-void mergeSort(const string& nombreArchivo) {   // Se aplica mezcla directa con 2 archivos temporales
-    const string archivoTemporal1 = "archivos/datosTemp1.txt";
-    const string archivoTemporal2 = "archivos/datosTemp2.txt";
+// Función para mezclar dos archivos ordenados
+void mezclarArchivos(const string& archivo1, const string& archivo2, const string& nombreArchivoSalida) {
+    ifstream archivoA(archivo1), archivoB(archivo2); // Se abren los archivos de entrada
+    ofstream archivoSalida(nombreArchivoSalida); // Se abre el archivo de salida
 
-    bool ordenado = false;
-
-    while (!ordenado) {     //Mientras el archivo no este ordenado se divide y se mezcla
-        dividirArchivo(nombreArchivo, archivoTemporal1, archivoTemporal2);  // Se llama a la funcion que divide el archivo original en dos archivos temporales
-        mezclarArchivos(archivoTemporal1, archivoTemporal2, nombreArchivo);  // Se llama a la funcion que mezcla los archivos temporales en el archivo original
-
-
-        // Comprobar si el archivo está ordenado
-        ifstream archivoComprobacion(nombreArchivo);
-        int datoActual, datoAnterior;
-        bool estaOrdenado = true;
-        archivoComprobacion >> datoAnterior;
-        while (archivoComprobacion >> datoActual) {  // Se recorre el archivo y se lee los datos para verificar si esta ordenado
-            if (datoActual < datoAnterior) {
-                estaOrdenado = false;   //Si algun dato no esta ordenado se establece al booleano como falso
-                break;
-            }
-            datoAnterior = datoActual;
-        }
-        archivoComprobacion.close();
-
-        ordenado = estaOrdenado;   // Se le asigna el valor del booleano del bucle interno 
+    if (!archivoA.is_open() || !archivoB.is_open() || !archivoSalida.is_open()) {
+        cout << "Error al abrir uno de los archivos durante la mezcla." << endl;
+        return;     //Se verifica que se hayan abierto los arcchivos, de no ser asi sale de la funcion
     }
 
-    remove(archivoTemporal1.c_str());     // Se eliminan los archivos temporales
-    remove(archivoTemporal2.c_str());
+    int num1, num2;
+    bool hayDato1 = bool(archivoA >> num1); // Se lee el primer número del primer archivo
+    bool hayDato2 = bool(archivoB >> num2); // Se lee el primer número del segundo archivo
+
+    while (hayDato1 && hayDato2) {      // Mientras haya datos en los dos archivos, se mezclan los datos
+        if (num1 < num2) {
+            archivoSalida << num1 << '\n'; // Se escribe el numero menor en el archivo de salida
+            hayDato1 = bool(archivoA >> num1); // Se lee el siguiente numero del primer archivo
+        } else {
+            archivoSalida << num2 << '\n'; // Se escribe el numero menor en el archivo de salida
+            hayDato2 = bool(archivoB >> num2); // Se lee el siguiente numero del segundo archivo
+        }
+    }
+
+    while (hayDato1) {      //Si hay datos en el archivo1, estos se ponen en el archivo de salida
+        archivoSalida << num1 << endl;
+        hayDato1 = bool(archivoA >> num1);
+    }
+    while (hayDato2) {      //Si hay datos en el archivo2, estos se ponen en el archivo de salida
+        archivoSalida << num2 << endl;
+        hayDato2 = bool(archivoB >> num2);
+    }
+
+    archivoA.close(); // Se cierran los archivos
+    archivoB.close(); 
+    archivoSalida.close(); 
+}
+
+void ordenarArchivoExterno(const string& nombreArchivoEntrada) {
+    dividirYOrdenar(nombreArchivoEntrada); // Se divide y se ordena el archivo de entrada
+
+    int numFragmentos = 0;
+    while (true) {
+        string archivoTemp = "temp" + to_string(numFragmentos) + ".txt";
+        ifstream archivo(archivoTemp);
+        if (!archivo.is_open()){        // Se cuenta el número de fragmentos
+            break;
+        } 
+        archivo.close();
+        numFragmentos++;
+    }
+
+    // Se mezclan los archivos temporales
+    for (int i = 0; i < numFragmentos - 1; ++i) {
+        string archivo1 = "temp" + to_string(i) + ".txt";
+        string archivo2 = "temp" + to_string(i + 1) + ".txt";
+        string nombreArchivoSalida = "temp" + to_string(i + 1) + ".txt";
+        mezclarArchivos(archivo1, archivo2, nombreArchivoSalida); // Se mezclan dos fragmentos
+    }
+
+    // Se renombra el último archivo temporal a "datosOrdenados.txt"
+    rename(("temp" + to_string(numFragmentos - 1) + ".txt").c_str(), "archivos/datosOrdenados.txt");
 }

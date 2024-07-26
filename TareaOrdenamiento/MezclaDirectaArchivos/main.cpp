@@ -1,13 +1,11 @@
 #include "mezcla.h"
 #include <iostream>
 
-using namespace std;
-
 int main() {
-    const string archivoDatos = "archivos/datos.txt";
+    string archivoEntrada = "archivos/datos.txt";
 
-    mergeSort(archivoDatos);
-    cout << "Ordenado por mezcla directa en el archivo: " << archivoDatos << endl;
-    
+    ordenarArchivoExterno(archivoEntrada);
+
+    cout << "Archivo ordenado en archivos/datosOrdenados.txt";
     return 0;
 }

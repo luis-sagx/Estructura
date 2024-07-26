@@ -2,9 +2,9 @@
 
 void intercalarArchivos(const string& archivo1, const string& archivo2, const string& archivoOrdenado) {
     ifstream archivoA, archivoB;    // Archivo de entrada
-    ofstream archivoC;      // Archivo de salida
+    ofstream archivoSalida;      // Archivo de salida
 
-    if (!leerArchivo(archivoA, archivo1) || !leerArchivo(archivoB, archivo2) || !escribirArchivo(archivoC, archivoOrdenado)) {
+    if (!leerArchivo(archivoA, archivo1) || !leerArchivo(archivoB, archivo2) || !escribirArchivo(archivoSalida, archivoOrdenado)) {
         return;     // Si algún archivo no se puede abrir, se sale de la función
     } 
 
@@ -15,25 +15,25 @@ void intercalarArchivos(const string& archivo1, const string& archivo2, const st
 
     while (hayDatoA && hayDatoB) {     // Intercala los datos mientras haya datos en ambos archivos
         if (datoA < datoB) {        // Compara los datos actuales de ambos archivos
-            archivoC << datoA << endl;  // Escribe el dato más pequeño en el archivo de salida
+            archivoSalida << datoA << endl;  // Escribe el dato más pequeño en el archivo de salida
             hayDatoA = bool (archivoA >> datoA);    // Lee el siguiente dato del archivoA
         } else {
-            archivoC << datoB << endl;  // Escribir el dato más pequeño en el archivo de salida
+            archivoSalida << datoB << endl;  // Escribir el dato más pequeño en el archivo de salida
             hayDatoB = bool (archivoB >> datoB);    // Lee el siguiente dato del archivoB
         }
     }
 
     while (hayDatoA) {  // Mientas aun queden datos en archivoA
-        archivoC << datoA << endl;  // Escribe el dato más pequeño en el archivo de salida
+        archivoSalida << datoA << endl;  // Escribe el dato más pequeño en el archivo de salida
         hayDatoA = bool (archivoA >> datoA);    // Lee el siguiente dato del archivoA
     }
 
     while (hayDatoB) {  // Mientas aun queden datos en archivoB
-        archivoC << datoB << endl;  // Escribir el dato más pequeño en el archivo de salida
+        archivoSalida << datoB << endl;  // Escribir el dato más pequeño en el archivo de salida
         hayDatoB = bool (archivoB >> datoB);    // Lee el siguiente dato del archivoB
     }
 
     archivoA.close();
     archivoB.close();
-    archivoC.close();
+    archivoSalida.close();
 }
