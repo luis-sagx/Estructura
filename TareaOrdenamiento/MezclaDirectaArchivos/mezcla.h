@@ -35,7 +35,7 @@ void dividirYOrdenar(const string& nombreArchivoEntrada) {    // Dividir el arch
             ordenamientoInsercion(fragmento, contador); // Se ordena el fragmento
             ofstream archivoSalida("temp" + to_string(indiceFragmento++) + ".txt"); // Se crea el archivo temporal
             for (int i = 0; i < contador; ++i) {
-                archivoSalida << fragmento[i] << '\n'; // Se escribe el fragmento ordenado en el archivo temporal
+                archivoSalida << fragmento[i] << endl; // Se escribe el fragmento ordenado en el archivo temporal
             }
             contador = 0; // Se reinicia el contador
         }
@@ -45,7 +45,7 @@ void dividirYOrdenar(const string& nombreArchivoEntrada) {    // Dividir el arch
         ordenamientoInsercion(fragmento, contador); // Se ordena el fragmento restante
         ofstream archivoSalida("temp" + to_string(indiceFragmento) + ".txt"); // Se crea el archivo temporal
         for (int i = 0; i < contador; ++i) {
-            archivoSalida << fragmento[i] << '\n'; // Se escribe el fragmento ordenado en el archivo temporal
+            archivoSalida << fragmento[i] << endl; // Se escribe el fragmento ordenado en el archivo temporal
         }
     }
 
@@ -68,10 +68,10 @@ void mezclarArchivos(const string& archivo1, const string& archivo2, const strin
 
     while (hayDato1 && hayDato2) {      // Mientras haya datos en los dos archivos, se mezclan los datos
         if (num1 < num2) {
-            archivoSalida << num1 << '\n'; // Se escribe el numero menor en el archivo de salida
+            archivoSalida << num1 << endl; // Se escribe el numero menor en el archivo de salida
             hayDato1 = bool(archivoA >> num1); // Se lee el siguiente numero del primer archivo
         } else {
-            archivoSalida << num2 << '\n'; // Se escribe el numero menor en el archivo de salida
+            archivoSalida << num2 << endl; // Se escribe el numero menor en el archivo de salida
             hayDato2 = bool(archivoB >> num2); // Se lee el siguiente numero del segundo archivo
         }
     }

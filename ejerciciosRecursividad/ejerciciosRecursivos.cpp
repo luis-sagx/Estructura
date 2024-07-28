@@ -42,16 +42,16 @@ void imprimirFibonacci(int n){
 int main(){
     int suma;
     suma = sumar(3);
-    printf("%d\n", suma);
+    printf("suma: %d\n", suma);
     int res;
     res = factorial(5);
-    printf("%d\n", res);
+    printf("factorial: %d\n", res);
     imprimirMenorAMayor(10);
     printf("\n");
     imprimirMayorAMenor(10);
     printf("\n");
     int numerosFibonacci;
     numerosFibonacci = fibonacci(10);
-    printf("%d\n", numerosFibonacci);
+    printf("fibonacci: %d\n", numerosFibonacci);
     imprimirFibonacci(10);
 }
