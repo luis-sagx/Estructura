@@ -1,27 +1,27 @@
 #include "Lista.h"
 
-void burbuja(Lista lista){
+void burbuja(Lista& lista){
     if (lista.cabeza == nullptr){
         return;
     }
 
     bool intercambiado;
     Nodo* actual;
-    Nodo* prev = nullptr;
+    
 
     do{
         intercambiado = false;
         actual = lista.cabeza;
         while (actual->siguiente != nullptr){
             if (actual->dato > actual->siguiente->dato) {
-                int temp = actual->dato;
+                int aux = actual->dato;
                 actual->dato = actual->siguiente->dato;
-                actual->siguiente->dato = temp;
+                actual->siguiente->dato = aux;
                 intercambiado = true;
             }
             actual = actual->siguiente;
         }
-        prev = actual;
+        
 
     }while(intercambiado);
 
@@ -36,6 +36,10 @@ int main() {
     lista.insertarFinal(22);
     lista.insertarInicio(47);
     lista.insertarFinal(44);
+    lista.insertarFinal(-1);
+    lista.insertarFinal(0);
+    lista.insertarFinal(25);
+    lista.insertarFinal(14);
 
     cout << "Lista antes de ordenar: ";
     lista.imprimir();
