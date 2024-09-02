@@ -1,12 +1,20 @@
 #include <iostream>
+#include <cstdlib>  // Para usar rand()
+#include <ctime>    // Para usar time()
 #include "lista.h"
 
 using namespace std;
+
+// Variable global para contar el número de iteraciones
+int contadorIteraciones = 0;
 
 // Función para fusionar dos listas ordenadas
 Nodo* fusionarListas(Nodo* izquierda, Nodo* derecha) {
     if (!izquierda) return derecha;
     if (!derecha) return izquierda;
+
+    // Incrementar el contador de iteraciones
+    contadorIteraciones++;
 
     if (izquierda->dato <= derecha->dato) {
         izquierda->siguiente = fusionarListas(izquierda->siguiente, derecha);
@@ -43,15 +51,19 @@ Nodo* mergeSort(Nodo* lista) {
 
 int main() {
     Lista lista;
+    int numeroDatos;
 
-    lista.insertarFinal(170);
-    lista.insertarFinal(45);
-    lista.insertarFinal(75);
-    lista.insertarFinal(90);
-    lista.insertarFinal(802);
-    lista.insertarFinal(24);
-    lista.insertarFinal(2);
-    lista.insertarFinal(66);
+    cout << "Ingrese el numero de datos a generar: ";
+    cin >> numeroDatos;
+
+    // Inicializar la semilla para generar números aleatorios
+    srand(time(0));
+
+    // Insertar números aleatorios en la lista
+    for (int i = 0; i < numeroDatos; i++) {
+        int numeroAleatorio = rand() % 1000;  // Generar número aleatorio entre 0 y 999
+        lista.insertarFinal(numeroAleatorio);
+    }
 
     cout << "Lista antes de ordenar:" << endl;
     lista.mostrarLista();
@@ -60,6 +72,9 @@ int main() {
 
     cout << "Lista despues de ordenar:" << endl;
     lista.mostrarLista();
+
+    // Mostrar el número de iteraciones realizadas
+    cout << "Numero de iteraciones: " << contadorIteraciones << endl;
 
     return 0;
 }
